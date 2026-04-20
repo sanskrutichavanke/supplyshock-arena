@@ -145,7 +145,7 @@ def scenario_box(title, scenario):
 # ---------- App title ----------
 
 st.title("🎮 SupplyShock Arena")
-st.write("A real-time operations simulation for testing supply chain performance under pressure.")
+st.write("A real-time decision simulator for testing supply chain performance under pressure.")
 
 st.markdown("---")
 
@@ -258,7 +258,7 @@ if st.button("🗑️ Start New Comparison"):
         del st.session_state["preview_scenario"]
     if "show_preview" in st.session_state:
         st.session_state["show_preview"] = False
-    st.success("Comparison reset. Save new Scenario A and Scenario B.")
+    st.success("Comparison reset. Save new First Comparison and Second Comparison.")
 
 current_scenario = {
     "Demand": demand,
@@ -298,14 +298,14 @@ if st.session_state["show_preview"]:
     save_col1, save_col2, save_col3 = st.columns(3)
 
     with save_col1:
-        if st.button("Save as Scenario A"):
+        if st.button("Save as First Comparison"):
             st.session_state["scenario_a"] = preview.copy()
-            st.success("Scenario A saved.")
+            st.success("First Comparison saved.")
 
     with save_col2:
-        if st.button("Save as Scenario B"):
+        if st.button("Save as Second Comparison"):
             st.session_state["scenario_b"] = preview.copy()
-            st.success("Scenario B saved.")
+            st.success("Second Comparison saved.")
 
     with save_col3:
         csv = preview_df.to_csv(index=False).encode("utf-8")
@@ -342,10 +342,35 @@ if "scenario_a" in st.session_state or "scenario_b" in st.session_state:
 
         st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
+        first_reasons = []
+        second_reasons = []
+
+        if a["Delay Risk"] < b["Delay Risk"]:
+            first_reasons.append("lower delay risk")
+        elif b["Delay Risk"] < a["Delay Risk"]:
+            second_reasons.append("lower delay risk")
+
+        if a["Cost Impact"] < b["Cost Impact"]:
+            first_reasons.append("lower cost impact")
+        elif b["Cost Impact"] < a["Cost Impact"]:
+            second_reasons.append("lower cost impact")
+
+        if a["Throughput"] > b["Throughput"]:
+            first_reasons.append("higher throughput")
+        elif b["Throughput"] > a["Throughput"]:
+            second_reasons.append("higher throughput")
+
+        if a["Score"] > b["Score"]:
+            first_reasons.append("higher overall score")
+        elif b["Score"] > a["Score"]:
+            second_reasons.append("higher overall score")
+
         if score_a > score_b:
-            st.success("🏆 Winner: First Comparison performs better overall.")
+            explanation = ", ".join(first_reasons) if first_reasons else "stronger overall balance"
+            st.success(f"🏆 Winner: First Comparison performs better overall due to {explanation}.")
         elif score_b > score_a:
-            st.success("🏆 Winner: Second Comparison performs better overall.")
+            explanation = ", ".join(second_reasons) if second_reasons else "stronger overall balance"
+            st.success(f"🏆 Winner: Second Comparison performs better overall due to {explanation}.")
         else:
             st.info("🤝 Result: First Comparison and Second Comparison are evenly matched.")
 
@@ -460,7 +485,7 @@ chart_data = pd.DataFrame({
 })
 
 chart = alt.Chart(chart_data).mark_bar(
-    color="#a86bb8",
+    color="#86efac",
     cornerRadiusTopLeft=8,
     cornerRadiusTopRight=8
 ).encode(
