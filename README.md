@@ -9,3 +9,6 @@ A real-time operations simulation app for testing supply chain decisions under p
 - Scenario preview and download
 - First vs Second comparison
 - Winner logic
+
+## 🚀 Live Demo
+https://your-app-link.streamlit.app
