@@ -9,7 +9,7 @@ The system introduces disruption events and allows users to compare different st
 ---
 
 ## 🚀 Live Demo
-[https://your-app-link.streamlit.app](https://supplyshock-arena-mvrpkrh6dbskdoeueu8uae.streamlit.app/)
+[https://supplyshock-arena.streamlit.app](https://supplyshock-arena-mvrpkrh6dbskdoeueu8uae.streamlit.app/)
 
 ---
 
